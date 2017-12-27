@@ -6,7 +6,7 @@
     <groupId>br.com.rodolfocastanho</groupId>
     <artifactId>controle2M</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
 
     <name>controle2M</name>
     <description>Controle de Ordens 2M.</description>
