@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layout/IndexLayout">
+
+<head>
+    <title>Liberação de Provisionamento</title>
+</head>
+
+    <section layout:fragment="content">
+
+        <div class="container">
+            <div class="section">
+
+                <div th:replace="/fragments/MsgInfo :: MsgInfo"></div>
+
+                <div class="row">
+                    <!--<div class="col s1"></div>-->
+
+                    <div class="col s12 m12">
+                        <div class="card hoverable">
+                            <div class="card-content black-text">
+                                <span class="card-title">Liberação de Aprovisionamento</span>
+
+
+                                <div class="row">
+                                    <form class="col s12" method="post" th:action="@{/ordem/aprovisionamento}" th:object="${ordem}">
+
+                                        <input type="hidden" th:field="*{id}"/>
+                                        <input type="hidden" th:field="*{numero}"/>
+                                        <input type="hidden" th:field="*{dataEntrada}"/>
+                                        <input type="hidden" th:field="*{cliente}"/>
+                                        <input type="hidden" th:field="*{responsavel}"/>
+                                        <input type="hidden" th:field="*{statusOrdem}"/>
+                                        <input type="hidden" th:field="*{tipoServico}" />
+                                        <input type="hidden" th:field="*{pendenciaBAL}" />
+                                        <input type="hidden" th:field="*{segmento}" />
+                                        <input type="hidden" th:field="*{e1}" />
+
+                                        <div class="row">
+                                            <div class="col s3"><span th:text="|Id: *{id}|"></span></div>
+                                            <div class="col s3"><span th:text="|Numero: *{numero}|"></span></div>
+                                            <div class="col s3"><span th:text="|Data de Entrada: *{{dataEntrada}}|"></span></div>
+                                            <div class="col s3"><span th:text="|Tipo: *{tipoServico.sigla}|"></span></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col s6"><span th:text="|Cliente: *{cliente}|"></span></div>
+                                            <div class="col s6"><span th:text="|Responsável: *{responsavel.nome}|"></span></div>
+                                        </div>
+
+                                        <div class="row"></div>
+
+                                        <div class="row">
+                                            <!--
+                                            <div class="input-field col s4">
+                                                <input id="dataProvisionamento" type="text" class="datepicker" th:field="*{dataProvisionamento}"
+                                                       th:classappend="${#fields.hasErrors('dataProvisionamento')} ? invalid"/>
+                                                <label for="dataProvisionamento">Data do Provisionamento:</label>
+                                            </div>
+                                            -->
+                                            <div class="input-field col s3">
+                                                <select id="statusProvisionamento" th:field="*{statusProvisionamento}">
+                                                    <option value="" selected="selected">Selecione...</option>
+                                                    <option th:each="statusProv : ${listaStatusProvisionamento}"
+                                                            th:text="${statusProv.descricao}"
+                                                            th:value="${statusProv.id}">
+                                                    </option>
+                                                </select>
+                                                <label for="statusProvisionamento">Status do Provisionamento:</label>
+                                            </div>
+                                            <div class="input-field col s3">
+                                                <select id="temComissionamento" th:field="*{statusComissionamento}">
+                                                    <option value="" selected="selected">Selecione...</option>
+                                                    <option th:each="statusCom : ${listaStatusComissionamento}"
+                                                            th:text="${statusCom.descricao}"
+                                                            th:value="${statusCom.id}">
+                                                    </option>
+                                                </select>
+                                                <label for="temComissionamento">Envolve Comissionamento?</label>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <input id="observacaoProvisionamento" type="text" class="validate"
+                                                          th:field="*{observacaoProvisionamento}"
+                                                          data-length="200" />
+                                                <label for="observacaoProvisionamento">Observação Adicional:</label>
+                                            </div>
+                                        </div>
+
+                                        <!--
+                                        <div class="row">
+                                            <div class="col s6">
+                                                <div class="switch">
+                                                    <label>
+
+                                                        <input id="temComissionamento" type="checkbox"
+                                                               th:field="*{temComissionamento}"/>
+                                                        <span class="lever"></span>
+                                                        Necessário Comissionamento?
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col s6">
+                                                <button class="btn waves-effect waves-light" type="submit" name="action">Gravar
+                                                    <i class="material-icons right">send</i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        -->
+                                        <button class="btn waves-effect waves-light" type="submit" name="action">Gravar
+                                            <i class="material-icons right">send</i>
+                                        </button>
+
+                                    </form>
+                                </div>
+
+                            </div>
+
+
+
+                            <!--
+                            <div class="card-action">
+                                <a href="#">This is a link</a>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+
+                    <!-- <div class="col s1"></div> -->
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </section>
+
+</html>

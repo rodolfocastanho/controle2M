@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layout/IndexLayout">
+
+<head>
+    <title>KPI - por Tempo</title>
+</head>
+
+<section layout:fragment="content">
+
+    <div class="container">
+        <div class="section">
+
+            <div class="row">
+                <div class="col s12">
+                    <h2>Resumo Gerencial - Rede de Transporte 2M (Tempo)</h2>
+                </div>
+            </div>
+
+            <div class="row">
+                <form class="col s12" method="post" th:action="@{/relatorio/grafico/tempo}" th:object="${periodo}">
+                    <div class="col s3 input-field">
+                        <input id="dataInicio" name="dataInicio" type="text" class="datepicker" th:field="*{dataInicio}"
+                               th:classappend="${#fields.hasErrors('dataInicio')} ? invalid"/>
+                        <label for="dataInicio" data-error="Data obrigatória">Data de Entrada (Início):</label>
+                    </div>
+                    <div class="col s3 input-field">
+                        <input id="dataFim" name="dataFim" type="text" class="datepicker" th:field="*{dataFim}"
+                               th:classappend="${#fields.hasErrors('dataFim')} ? invalid" />
+                        <label for="dataFim" data-error="Data obrigatória">Data de Entrada (Fim):</label>
+                    </div>
+                    <div class="col s2">
+                        <button class="btn waves-effect waves-light" type="submit" name="action">Filtrar
+                            <i class="material-icons right">send</i>
+                        </button>
+                    </div>
+                    <div class="col s4"></div>
+                </form>
+            </div>
+            <div th:replace="/fragments/MsgInfo :: MsgInfo"></div>
+
+            <div th:if="${periodo.dataInicio} != null">
+                <div th:if="${periodo.dataFim} != null">
+
+                    <input type="hidden" id="dataGrafAtividadeAprovisionamento" th:value="*{GrafAtividadeAprovisionamento}">
+                    <input type="hidden" id="dataGrafAtividadeComissionamento" th:value="*{GrafAtividadeComissionamento}">
+                    <input type="hidden" id="dataGrafGeral" th:value="*{GrafGeral}">
+                    <input type="hidden" id="dataGrafTempoIdeal" th:value="*{GrafTempoIdeal}">
+                    <input type="hidden" id="dataGrafKpi2" th:value="*{GrafKpi}">
+                    <input type="hidden" id="dataGrafKpi" th:value="*{resumo.ordemUmDiaPct}">
+
+                    <div class="row">
+                        <div class="col s12 m12">
+                            <div class="card hoverable">
+                                <div class="card-content black-text">
+                                    <span class="card-title">Consolidado - Atividade</span>
+
+                                    <div class="row">
+                                        <div class="col s12 m12">
+                                            <!-- Tabela por atividade -->
+                                            <table class="highlight bordered centered">
+                                                <thead>
+                                                <tr>
+                                                    <th colspan="2"></th>
+                                                    <th colspan="5" bgcolor="#86B7D5"><font color="white">Executado</font></th>
+                                                    <th></th>
+                                                </tr>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>Total</th>
+                                                    <th bgcolor="#A0D1EF">Total</th>
+                                                    <th bgcolor="#A0D1EF">1 Dia</th>
+                                                    <th bgcolor="#A0D1EF">> 1 Dia</th>
+                                                    <th bgcolor="#A0D1EF">> 3 Dias</th>
+                                                    <th bgcolor="#A0D1EF">Tempo Médio</th>
+                                                    <th>Pendente</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td>Aprovisionamento</td>
+                                                    <td th:text="${resumo.ordemTotal}"></td>
+                                                    <td th:text="|${resumo.provisionamentoExecutado} (${#numbers.formatInteger(resumo.provisionamentoExecutadoPct,1)}%)|"></td>
+                                                    <td th:text="|${resumo.provisionamentoUmDia} (${#numbers.formatInteger(resumo.provisionamentoUmDiaPct,1)}%)|"></td>
+                                                    <td th:text="|${resumo.provisionamentoMaiorUmDia} (${#numbers.formatInteger(resumo.provisionamentoMaiorUmDiaPct,1)}%)|"></td>
+                                                    <td th:text="|${resumo.provisionamentoMaiorTresDias} (${#numbers.formatInteger(resumo.provisionamentoMaiorTresDias,1)}%)|"></td>
+                                                    <td th:text="|${#numbers.formatInteger(resumo.provisionamentoMediaAtendimento,1)} dia(s)|"></td>
+                                                    <td th:text="|${resumo.provisionamentoPendente} (${#numbers.formatInteger(resumo.provisionamentoPendente,1)}%)|"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Comissionamento</td>
+                                                    <td th:text="${resumo.ordemTotal}"></td>
+                                                    <td th:text="|${resumo.comissionamentoExecutado} (${#numbers.formatInteger(resumo.comissionamentoExecutadoPct,1)}%)|"></td>
+                                                    <td th:text="|${resumo.comissionamentoUmDia} (${#numbers.formatInteger(resumo.comissionamentoUmDiaPct,1)}%)|"></td>
+                                                    <td th:text="|${resumo.comissionamentoMaiorUmDia} (${#numbers.formatInteger(resumo.comissionamentoMaiorUmDiaPct,1)}%)|"></td>
+                                                    <td th:text="|${resumo.comissionamentoMaiorTresDias} (${#numbers.formatInteger(resumo.comissionamentoMaiorTresDias,1)}%)|"></td>
+                                                    <td th:text="|${#numbers.formatInteger(resumo.comissionamentoMediaAtendimento,1)} dia(s)|"></td>
+                                                    <td th:text="|${resumo.comissionamentoPendente} (${#numbers.formatInteger(resumo.comissionamentoPendente,1)}%)|"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td><b>Total</b></td>
+                                                    <td><b><a th:text="${resumo.ordemTotal}" th:href="|@{/relatorio/grafico/tempo/detalhe(atividade=Total,status=Total,dtInicio=${periodo.dataInicioLong},dtFim=${periodo.dataFimLong})}|" target="_blank"></a></b></td>
+                                                    <td><b><a th:text="|${resumo.ordemExecutado} (${#numbers.formatInteger(resumo.ordemExecutadoPct,1)}%)|" th:href="|@{/relatorio/grafico/tempo/detalhe(atividade=Total,status=Total_Executado,dtInicio=${periodo.dataInicioLong},dtFim=${periodo.dataFimLong})}|" target="_blank"></a></b></td>
+                                                    <td><b><a th:text="|${resumo.ordemUmDia} (${#numbers.formatInteger(resumo.ordemUmDiaPct,1)}%)|" th:href="|@{/relatorio/grafico/tempo/detalhe(atividade=Total,status=Executado_1_Dia,dtInicio=${periodo.dataInicioLong},dtFim=${periodo.dataFimLong})}|" target="_blank"></a></b></td>
+                                                    <td><b><a th:text="|${resumo.ordemMaiorUmDia} (${#numbers.formatInteger(resumo.ordemMaiorUmDiaPct,1)}%)|" th:href="|@{/relatorio/grafico/tempo/detalhe(atividade=Total,status=Executado_Mais_de_1_dia,dtInicio=${periodo.dataInicioLong},dtFim=${periodo.dataFimLong})}|" target="_blank"></a></b></td>
+                                                    <td><b><a th:text="|${resumo.ordemMaiorTresDias} (${#numbers.formatInteger(resumo.ordemMaiorTresDias,1)}%)|" th:href="|@{/relatorio/grafico/tempo/detalhe(atividade=Total,status=Executado_Mais_de_3_dias,dtInicio=${periodo.dataInicioLong},dtFim=${periodo.dataFimLong})}|" target="_blank"></a></b></td>
+                                                    <td><b><span th:text="|${#numbers.formatInteger(resumo.ordemMediaAtendimento,1)} dia(s)|"></span></b></td>
+                                                    <td><b><a th:text="|${resumo.ordemPendente} (${#numbers.formatInteger(resumo.ordemPendente,1)}%)|" th:href="|@{/relatorio/grafico/tempo/detalhe(atividade=Total,status=Pendentes,dtInicio=${periodo.dataInicioLong},dtFim=${periodo.dataFimLong})}|" target="_blank"></a></b></td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="8"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Medição por Qtd E1's</td>
+                                                    <td th:text="${resumo.e1Total}"></td>
+                                                    <td th:text="|${resumo.e1Executado} (${#numbers.formatInteger(resumo.e1ExecutadoPct,1)}%)|"></td>
+                                                    <td th:text="|${resumo.e1UmDia} (${#numbers.formatInteger(resumo.e1UmDiaPct,1)}%)|"></td>
+                                                    <td th:text="|${resumo.e1MaiorUmDia} (${#numbers.formatInteger(resumo.e1MaiorUmDiaPct,1)}%)|"></td>
+                                                    <td th:text="|${resumo.e1MaiorTresDias} (${#numbers.formatInteger(resumo.e1MaiorTresDias,1)}%)|"></td>
+                                                    <td></td>
+                                                    <td th:text="|${resumo.e1Pendente} (${#numbers.formatInteger(resumo.e1Pendente,1)}%)|"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s12 m12">
+                                            <!-- Gráfico por atividade -->
+                                            <canvas id="grafAtividade" height="70"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col s12 m8">
+                            <div class="card hoverable">
+                                <div class="card-content black-text">
+                                    <span class="card-title">Consolidado - Carteira Geral</span>
+
+                                    <div class="row">
+                                        <div class="col s12 m12">
+                                            <!-- Tabela carteira geral -->
+                                            <table class="highlight bordered centered">
+                                                <thead>
+                                                <tr>
+                                                    <th bgcolor="#86B7D5"><font color="white">Qtde. Total de Liberações</font></th>
+                                                    <th bgcolor="#86B7D5"><font color="white">Tempo Médio Executado (Dias)</font></th>
+                                                    <th bgcolor="#86B7D5"><font color="white">Liberação no Prazo 1 dia (%)</font></th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr>
+                                                    <td th:text="${resumo.ordemExecutado}"></td>
+                                                    <td th:text="|${resumo.ordemMediaAtendimento} dia(s)|"></td>
+                                                    <td th:text="|${#numbers.formatInteger(resumo.ordemUmDiaPct,1)}%|"></td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col s12 m6">
+                                            <!-- Gráfico carteira geral -->
+                                            <canvas id="grafGeral" height="120"></canvas>
+                                        </div>
+                                        <div class="col s12 m6">
+                                            <!-- Gráfico Tempo Ideal -->
+                                            <canvas id="grafTempoIdeal" height="120"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col s12 m4">
+                            <div class="card hoverable">
+                                <div class="card-content black-text">
+                                    <span class="card-title">KPI - Liberação em até 3 dias</span>
+                                    <div class="row">
+                                        <div class="col s12 m12">
+                                            <!-- Gráfico Gauge -->
+                                            <div id="gaugeKPI"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</section>
+
+</html>
+
+<script>
+
+    var dataChartGrafAtividadeAprovisionamento = document.getElementById("dataGrafAtividadeAprovisionamento").value;
+    var dataChartGrafAtividadeComissionamento = document.getElementById("dataGrafAtividadeComissionamento").value;
+
+    var dataGrafAtividade = {
+        labels: ["Total", "Executado", "1 dia", "> 1 dia", "> 3 dias", "Pendente"],
+            datasets: [{
+                label: 'Aprovisionamento',
+                data: dataChartGrafAtividadeAprovisionamento.split(","),
+                backgroundColor: 'rgba(83, 132, 162, 0.5)',
+                borderColor: 'rgba(83, 132, 162, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Comissionamento',
+                data: dataChartGrafAtividadeComissionamento.split(","),
+                backgroundColor: 'rgba(160, 209, 239, 0.5)',
+                borderColor: 'rgba(160, 209, 239, 1)',
+                borderWidth: 1
+            }]
+    };
+
+    var ctxGrafAtividade = document.getElementById("grafAtividade").getContext('2d');
+    var chartGrafAtividade = new Chart(ctxGrafAtividade, {
+        type: 'bar',
+        data: dataGrafAtividade,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    },
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            },
+            legend: {
+                        position: 'bottom'
+            },
+            layout: {
+                padding: {
+                    left: 20,
+                    right: 0,
+                    top: 20,
+                    bottom: 0
+                }
+            }
+        }
+    });
+
+
+    var dataChartGrafGeral = document.getElementById("dataGrafGeral").value;
+    var dataGrafGeral = {
+        labels: ["Total", "Executado"],
+            datasets: [{
+                data: dataChartGrafGeral.split(","),
+                backgroundColor: [
+                    'rgba(83, 132, 162, 0.5)',
+                    'rgba(160, 209, 239, 0.5)'
+                ],
+                borderColor: [
+                    'rgba(83, 132, 162, 1)',
+                    'rgba(160, 209, 239, 1)'
+                ],
+                borderWidth: 1
+            }]
+    };
+
+    var ctxGrafGeral = document.getElementById("grafGeral").getContext('2d');
+    var chartGrafGeral = new Chart(ctxGrafGeral, {
+        type: 'bar',
+        data: dataGrafGeral,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    },
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            },
+            legend: {
+                        display: false
+            },
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 0,
+                    top: 10,
+                    bottom: 0
+                }
+            }
+        }
+    });
+
+
+    var dataChartGrafTempoIdeal = document.getElementById("dataGrafTempoIdeal").value;
+    var dataGrafTempoIdeal = {
+    labels: ['Ideal (1 dia)', 'Tempo Médio'],
+        datasets: [{
+          data: dataChartGrafTempoIdeal.split(","),
+          backgroundColor: [
+                'rgba(83, 132, 162, 0.5)',
+                'rgba(160, 209, 239, 0.5)'
+            ],
+            borderColor: [
+                'rgba(83, 132, 162, 1)',
+                'rgba(160, 209, 239, 1)'
+            ],
+            borderWidth: 1
+            }, {
+          label: 'Tempo Ideal - 1 dia',
+          data: [1, 1],
+          backgroundColor: [
+                'rgba(244, 25, 13, 0)'
+            ],
+            borderColor: [
+                'rgba(244, 25, 13, 1)'
+            ],
+            borderWidth: 5,
+
+          // Changes this dataset to become a line
+          type: 'line'
+        }]
+    };
+
+    var ctxGrafTempoIdeal = document.getElementById("grafTempoIdeal").getContext('2d');
+    var chartGrafTempoIdeal = new Chart(ctxGrafTempoIdeal, {
+        type: 'bar',
+        data: dataGrafTempoIdeal,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true,
+                        display: false
+                    },
+                    gridLines: {
+                        display: false
+                    }
+                }]
+            },
+            legend: {
+                        display: false
+            },
+            layout: {
+                padding: {
+                    left: 10,
+                    right: 0,
+                    top: 10,
+                    bottom: 0
+                }
+            }
+        }
+    });
+
+</script>
+
+<script type="text/javascript">
+    var dataChartGrafKpi = document.getElementById("dataGrafKpi").value;
+
+    google.charts.load('current', {'packages':['gauge']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+    var data = google.visualization.arrayToDataTable([
+      ['Label', 'Value'],
+      ['%', parseInt(dataChartGrafKpi)]
+    ]);
+    console.log(data);
+
+    var options = {
+      width: 350, height: 350,
+      redFrom: 0, redTo: 40,
+      yellowFrom:40, yellowTo: 70,
+      greenFrom: 70, greenTo: 100,
+      minorTicks: 5,
+      greenColor: '#46c367',
+      yellowColor: '#fac94c',
+      redColor: '#e63d62'
+    };
+
+    var chart = new google.visualization.Gauge(document.getElementById('gaugeKPI'));
+
+    chart.draw(data, options);
+
+    }
+</script>

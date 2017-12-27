@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layout/IndexLayout">
+
+<head>
+    <title th:text="${id == null ? 'Cadastro de usuário' : 'Edição de usuário'}">Título</title>
+</head>
+
+<section layout:fragment="content">
+
+    <div class="container">
+        <div class="section">
+
+            <div th:replace="/fragments/MsgInfo :: MsgInfo"></div>
+            <input type="hidden" id="vgrafico" th:value="*{grafico}">
+            <input type="hidden" id="vgauge" value="70">
+
+            <div class="row">
+                <div class="col s12">
+                    <span th:text="*{grafico}"></span>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s6">
+                    <canvas id="myChart" width="400" height="400"></canvas>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col s12">
+                    <div id="chart_div"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</section>
+
+</html>
+
+<script>
+    var dataChart = document.getElementById("vgrafico").value;
+
+    var ctx = document.getElementById("myChart").getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+            datasets: [{
+                label: '# of Votes',
+                data: dataChart.split(","),
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+</script>
+
+<script type="text/javascript">
+    var dataGauge = document.getElementById("vgauge").value;
+
+    google.charts.load('current', {'packages':['gauge']});
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+    var data = google.visualization.arrayToDataTable([
+      ['Label', 'Value'],
+      ['%', parseInt(dataGauge)]
+    ]);
+
+    var options = {
+      width: 400, height: 400,
+      redFrom: 0, redTo: 40,
+      yellowFrom:40, yellowTo: 70,
+      greenFrom: 70, greenTo: 100,
+      minorTicks: 5,
+      greenColor: '#46c367',
+      yellowColor: '#fac94c',
+      redColor: '#e63d62'
+    };
+
+    var chart = new google.visualization.Gauge(document.getElementById('chart_div'));
+
+    chart.draw(data, options);
+
+    }
+</script>

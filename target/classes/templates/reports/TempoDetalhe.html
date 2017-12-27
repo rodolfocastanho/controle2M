@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layout/IndexSimple">
+
+<section layout:fragment="content">
+
+    <h4 th:text="|Ordens (${status}) - Periodo: ${#dates.format(d1, 'dd/MM/yyyy')} até ${#dates.format(d2, 'dd/MM/yyyy')}|"></h4>
+    <!--
+    <button id="btnExport" class="btn waves-effect waves-light" type="button" name="action">Exportar para Excel
+        <i class="material-icons right">file_download</i>
+    </button>
+    -->
+    <div id="dvData">
+        <table class="highlight bordered">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>PEE / OSX</th>
+                <th>Data de Entrada</th>
+                <th>Cliente</th>
+                <th>Tipo</th>
+                <th>Status da Ordem</th>
+                <th>Responsável</th>
+                <th>Qtd E1's</th>
+                <th bgcolor="#eeeeee">Data Aprov.</th>
+                <th bgcolor="#eeeeee">Status Aprov.</th>
+                <th bgcolor="#eeeeee">Resp. Aprov.</th>
+                <th bgcolor="#eeeeee">Obs. Aprov.</th>
+                <th bgcolor="#c4c4c4">Data Comis.</th>
+                <th bgcolor="#c4c4c4">Status Comis.</th>
+                <th bgcolor="#c4c4c4">Resp. Comis.</th>
+                <th bgcolor="#c4c4c4">Obs. Comis.</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="ordem : ${listaDetalhe}">
+                <td th:text="${ordem.id}"></td>
+                <td th:text="${ordem.numero}"></td>
+                <td th:text="${{ordem.dataEntrada}}"></td>
+                <td th:text="${#strings.abbreviate(ordem.cliente,43)}"></td>
+                <td th:text="${ordem.tipoServico.sigla}"></td>
+                <td th:text="${ordem.pendenciaBAL}==1 ? |${ordem.statusOrdem} (BAL)| : ${ordem.statusOrdem}"></td>
+                <td th:text="${#strings.abbreviate(ordem.responsavel.nome,15)}"></td>
+                <td th:text="${ordem.e1}"></td>
+                <td bgcolor="#eeeeee" th:text="${{ordem.dataProvisionamento}}"></td>
+                <td bgcolor="#eeeeee" th:text="${ordem.statusProvisionamento} == null ? null : ${ordem.statusProvisionamento.descricao}"></td>
+                <td bgcolor="#eeeeee" th:text="${ordem.responsavelProvisionamento} == null ? null : ${#strings.abbreviate(ordem.responsavelProvisionamento.nome,15)}"></td>
+                <td bgcolor="#eeeeee" th:text="${ordem.observacaoProvisionamento}"></td>
+                <td bgcolor="#c4c4c4" th:text="${{ordem.dataComissionamento}}"></td>
+                <td bgcolor="#c4c4c4" th:text="${ordem.statusComissionamento} == null ? null : ${ordem.statusComissionamento.descricao}"></td>
+                <td bgcolor="#c4c4c4" th:text="${ordem.responsavelComissionamento} == null ? null : ${#strings.abbreviate(ordem.responsavelComissionamento.nome,15)}"></td>
+                <td bgcolor="#c4c4c4" th:text="${ordem.observacaoComissionamento}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</section>
+
+</html>
+
+

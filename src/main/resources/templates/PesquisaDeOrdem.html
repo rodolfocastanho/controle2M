@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layout/IndexLayout">
+
+    <section layout:fragment="content">
+
+        <div class="container">
+            <div class="section">
+
+                <!-- Colocar mensagens aqui... -->
+                <h4>Ordens Pendentes</h4>
+
+                <div class="row">
+                    <form class="col s12 m12" method="get" th:action="@{/ordem}" th:object="${ordem}">
+                        <div class="row">
+                            <div class="input-field col s4">
+                                <input id="numero" type="text" th:field="*{numero}" />
+                                <label for="numero">PEE / OSX:</label>
+                            </div>
+                            <div class="input-field col s4">
+                                <select id="pendencia" th:field="*{statusOrdem}">
+                                    <option value="" selected="selected">Todas</option>
+                                    <option value="Aprovisionamento">Aprovisionamento</option>
+                                    <option value="Comissionamento">Comissionamento</option>
+                                </select>
+                                <label for="pendencia">Pendência:</label>
+                                <!--
+                                <input id="pendencia" type="text" th:field="*{numero}" />
+                                <label for="pendencia">Pendência:</label>
+                                -->
+                            </div>
+                            <div class="input-field col s4">
+                                <select id="responsavel" th:field="*{responsavel}">
+                                    <option value="" selected="selected">Todos</option>
+                                    <option th:each="usuario : ${listaDeUsuarios}"
+                                            th:text="${usuario.nome}"
+                                            th:value="${usuario.id}">
+                                    </option>
+                                </select>
+                                <label for="responsavel">Responsável:</label>
+                                <!--
+                                <input type="text" id="responsavel" class="autocomplete" th:field="*{responsavel.nome}"/>
+                                <label for="responsavel">Responsável:</label>
+                                <input type="hidden" name="responsavel" id="usuario-responsavel" th:value="*{responsavel.id}"/>
+                                -->
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s4">
+                                <button class="btn waves-effect waves-light" type="submit" name="action">Pesquisar
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m12">
+                        <div class="card hoverable">
+                            <div class="card-content black-text">
+                                <span class="card-title">Ordens Pendentes</span>
+
+                                <table class="responsive-table highlight">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>PEE / OSX</th>
+                                        <th>Data de Entrada</th>
+                                        <th>Cliente</th>
+                                        <th>Tipo</th>
+                                        <th>Pendência</th>
+                                        <th>Responsável</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="ordem : ${pagina.conteudo}">
+                                        <td th:text="${ordem.id}"></td>
+                                        <td th:text="${ordem.numero}"></td>
+                                        <td th:text="${{ordem.dataEntrada}}"></td>
+                                        <td th:text="${#strings.abbreviate(ordem.cliente,43)}"></td>
+                                        <td th:text="${ordem.tipoServico.sigla}"></td>
+                                        <td th:text="${ordem.pendenciaBAL}==1 ? |${ordem.statusOrdem} (BAL)| : ${ordem.statusOrdem}"></td>
+                                        <!--<td th:text="${ordem.dataProvisionamento} == null ? ${ordem.responsavel.nome} : null"></td>-->
+                                        <td th:text="${ordem.dataProvisionamento} == null ? ${#strings.abbreviate(ordem.responsavel.nome,15)} : null"></td>
+                                        <td>
+                                            <a class="tooltipped" data-position="top" data-delay="50"
+                                               data-tooltip="Liberar Ordem"
+                                               th:href="${ordem.statusOrdem} == 'Aprovisionamento' ? @{/ordem/aprovisionamento/{id}(id=${ordem.id})} : @{/ordem/comissionamento/{id}(id=${ordem.id})}">
+                                                <i class="tiny material-icons">mode_edit</i>
+                                            </a>
+                                            <!--
+                                            <a class="tooltiped js-remover-entidade-btn" data-position="top" data-delay="50"
+                                               data-tooltip="Apagar" href="#" style="margin-left: 9px">
+                                                <i class="tiny material-icons">delete</i>
+                                            </a>
+                                            -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <!--<td colspan="6" th:if="${#lists.isEmpty(ordens)}">-->
+                                        <td colspan="6" th:if="${pagina.vazia}">
+                                            Nenhuma ordem encontrada!
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:replace="/fragments/Pagination :: Pagination(${pagina})"></div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!--
+    <th:block layout:fragment="javascript-extra">
+        <script th:src="@{/javascript/autocomplete-usuario.js}"></script>
+    </th:block>
+    -->
+
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layout/IndexLayout">
+
+    <section layout:fragment="content">
+
+        <div class="container">
+            <div class="section">
+
+                <!-- Colocar mensagens aqui... -->
+                <h4>Consulta de Ordens</h4>
+
+                <div class="row">
+                    <form class="col s12 m12" method="get" th:action="@{/relatorio/ordem}" th:object="${ordem}">
+                        <div class="row">
+                            <div class="input-field col s4">
+                                <input id="numero" type="text" th:field="*{numero}" />
+                                <label for="numero">PEE / OSX:</label>
+                            </div>
+                            <div class="input-field col s4">
+                                <select id="pendencia" th:field="*{statusOrdem}">
+                                    <option value="" selected="selected">Todas</option>
+                                    <option value="Aprovisionamento">Aprovisionamento</option>
+                                    <option value="Comissionamento">Comissionamento</option>
+                                    <option value="Finalizado">Finalizado</option>
+                                </select>
+                                <label for="pendencia">Status:</label>
+                                <!--
+                                <input id="pendencia" type="text" th:field="*{numero}" />
+                                <label for="pendencia">Pendência:</label>
+                                -->
+                            </div>
+                            <div class="input-field col s4">
+                                <select id="responsavel" th:field="*{responsavel}">
+                                    <option value="" selected="selected">Todos</option>
+                                    <option th:each="usuario : ${listaDeUsuarios}"
+                                            th:text="${usuario.nome}"
+                                            th:value="${usuario.id}">
+                                    </option>
+                                </select>
+                                <label for="responsavel">Responsável:</label>
+                                <!--
+                                <input type="text" id="responsavel" class="autocomplete" th:field="*{responsavel.nome}"/>
+                                <label for="responsavel">Responsável:</label>
+                                <input type="hidden" name="responsavel" id="usuario-responsavel" th:value="*{responsavel.id}"/>
+                                -->
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col s4">
+                                <button class="btn waves-effect waves-light" type="submit" name="action">Pesquisar
+                                    <i class="material-icons right">send</i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m12">
+                        <div class="card hoverable">
+                            <div class="card-content black-text">
+                                <span class="card-title">Resultado</span>
+
+                                <table class="responsive-table highlight">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>PEE / OSX</th>
+                                        <th>Data de Entrada</th>
+                                        <th>Cliente</th>
+                                        <th>Status</th>
+                                        <th>Responsável</th>
+                                        <th>Detalhes</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="ordem : ${pagina.conteudo}">
+                                        <td th:text="${ordem.id}"></td>
+                                        <td th:text="${ordem.numero}"></td>
+                                        <td th:text="${{ordem.dataEntrada}}"></td>
+                                        <td th:text="${ordem.cliente}"></td>
+                                        <td th:text="${ordem.statusOrdem}"></td>
+                                        <td th:text="${ordem.responsavel.nome}"></td>
+                                        <td>
+                                            <a class="tooltipped modal-trigger" data-position="top" data-delay="50"
+                                               data-tooltip="Detalhes"
+                                               th:href="@{#modal{id}(id=${ordem.id})}">
+                                                <i class="tiny material-icons">details</i>
+                                            </a>
+                                        </td>
+
+                                        <!-- Modal Detalhes -->
+                                        <div th:id="@{modal{id}(id=${ordem.id})}" class="modal bottom-sheet">
+                                            <div class="row">
+                                                <div class="col s3"></div>
+                                                <div class="col s6">
+                                                    <div class="modal-content">
+                                                        <h4><span th:text="|Ordem: ${ordem.numero}|"></span></h4>
+                                                        <p th:text="|Cliente: ${ordem.cliente}|"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col s3"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s3"></div>
+                                                <div class="col s6">
+                                                    <div class="row">
+                                                        <div class="col s4"><span></span></div>
+                                                        <div class="col s4"><span><b>Aprovisionamento</b></span></div>
+                                                        <div class="col s4"><span><b>Comissionamento</b></span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col s3"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s3"></div>
+                                                <div class="col s6">
+                                                    <div class="row">
+                                                        <div class="col s4"><span>Data: </span></div>
+                                                        <div class="col s4"><span th:text="${ordem.dataProvisionamento} == null ? '-' : ${{ordem.dataProvisionamento}}"></span></div>
+                                                        <div class="col s4"><span th:text="${ordem.dataComissionamento} == null ? '-' : ${{ordem.dataComissionamento}}"></span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col s3"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s3"></div>
+                                                <div class="col s6">
+                                                    <div class="row">
+                                                        <div class="col s4"><span>Status: </span></div>
+                                                        <div class="col s4"><span th:text="${ordem.statusProvisionamento} == null ? '-' : ${{ordem.statusProvisionamento.descricao}}"></span></div>
+                                                        <div class="col s4"><span th:text="${ordem.statusComissionamento} == null ? '-' : ${{ordem.statusComissionamento.descricao}}"></span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col s3"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col s3"></div>
+                                                <div class="col s6">
+                                                    <div class="row">
+                                                        <div class="col s4"><span>Responsável: </span></div>
+                                                        <div class="col s4"><span th:text="${ordem.responsavelProvisionamento} == null ? '-' : ${{ordem.responsavelProvisionamento.nome}}"></span></div>
+                                                        <div class="col s4"><span th:text="${ordem.responsavelComissionamento} == null ? '-' : ${{ordem.responsavelComissionamento.nome}}"></span></div>
+                                                    </div>
+                                                </div>
+                                                <div class="col s3"></div>
+                                            </div>
+                                        </div>
+
+                                    </tr>
+                                    <tr>
+                                        <!--<td colspan="6" th:if="${#lists.isEmpty(ordens)}">-->
+                                        <td colspan="6" th:if="${pagina.vazia}">
+                                            Nenhuma ordem encontrada!
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:replace="/fragments/Pagination :: Pagination(${pagina})"></div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <!--
+    <th:block layout:fragment="javascript-extra">
+        <script th:src="@{/javascript/autocomplete-usuario.js}"></script>
+    </th:block>
+    -->
+
+</html>

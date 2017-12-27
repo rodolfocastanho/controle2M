@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layout/IndexLayout">
+
+    <section layout:fragment="content">
+
+        <div class="container">
+            <div class="section">
+
+                <!-- Colocar mensagens aqui... -->
+                <h4>Lista de Usuários</h4>
+
+                <div class="row">
+                    <form class="col s12" method="get" th:action="@{/usuario}" th:object="${usuario}">
+                        <div class="row">
+                            <div class="input-field col m12 s12 l6">
+                                <i class="material-icons prefix">account_circle</i>
+                                <input id="icon_prefix" type="text" th:field="*{nome}" />
+                                <label for="icon_prefix">Nome:</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="row">
+                    <div class="col s12 m12">
+                        <div class="card hoverable">
+                            <div class="card-content black-text">
+                                <span class="card-title">Usuários</span>
+
+                                <table class="responsive-table highlight">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Login</th>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Perfil</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="usuario : ${pagina.conteudo}">
+                                        <td th:text="${usuario.id}"></td>
+                                        <td th:text="${usuario.login}"></td>
+                                        <td th:text="${usuario.nome}"></td>
+                                        <td th:text="${usuario.email}"></td>
+                                        <td th:text="${usuario.tipoPerfil.tipoPerfil}"></td>
+                                        <td>
+                                            <a class="tooltipped" data-position="top" data-delay="50"
+                                               data-tooltip="Editar" th:href="@{/usuario/{id}(id=${usuario.id})}">
+                                                <i class="tiny material-icons">mode_edit</i>
+                                            </a>
+                                            <!--
+                                            <a class="tooltiped js-remover-entidade-btn" data-position="top" data-delay="50"
+                                               data-tooltip="Apagar" href="#" style="margin-left: 9px">
+                                                <i class="tiny material-icons">delete</i>
+                                            </a>
+                                            -->
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6" th:if="${pagina.vazia}">
+                                            Nenhum usuário encontrado!
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div th:replace="/fragments/Pagination :: Pagination(${pagina})"></div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+</html>

@@ -1,0 +1,22 @@
+package br.com.rodolfocastanho.controle2M.model;
+
+public enum StatusProvisionamento_ENUM {
+
+    LIBERADO("Liberado"),
+    DEV_TX("Devolvido - Erro TX"),
+    DEV_CX("Devolvido - Erro CX"),
+    DEV_SWT("Devolvido - Erro SWT"),
+    DEV_REDE("Devolvido - Rede IP Ocupada/Nó indevido"),
+    DEV_OUTROS("Devolvido - Outros");
+
+    private String statusProvisionamento;
+
+    StatusProvisionamento(String statusProvisionamento){
+        this.statusProvisionamento = statusProvisionamento;
+    }
+
+    public String getStatusProvisionamento() {
+        return statusProvisionamento;
+    }
+
+}

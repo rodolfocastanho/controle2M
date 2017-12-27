@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0"/> -->
+    <title>Controle 2M</title>
+
+    <!-- CSS  -->
+    <!-- <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/> -->
+    <link th:href="@{/vendor/google/material-icons/icon.css}" type="text/css" rel="stylesheet" />
+    <link th:href="@{/vendor/materialize/css/materialize.min.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+    <link th:href="@{/vendor/materialize/css/style.css}" type="text/css" rel="stylesheet" media="screen,projection"/>
+
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+</head>
+
+<body>
+
+<header th:replace="/fragments/Top :: Top"></header>
+
+<main>
+    <section layout:fragment="content"></section>
+</main>
+
+<footer th:replace="/fragments/Footer :: Footer"></footer>
+
+<!--  Scripts-->
+<!-- <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script> -->
+<script th:src="@{/vendor/jquery/jquery-3.2.1.min.js}"></script>
+<script th:src="@{/vendor/materialize/js/materialize.min.js}"></script>
+<script th:src="@{/vendor/materialize/js/init.js}"></script>
+
+<script th:src="@{/vendor/materialize/js/datepicker.js}"></script>
+<!--
+<script th:src="@{/vendor/bootstrap-datepicker/bootstrap-datepicker.min.js}"></script>
+<script th:src="@{/vendor/bootstrap-datepicker/bootstrap-datepicker.pt-BR.min.js}"></script>
+<script th:src="@{/vendor/bootstrap-datepicker/datepicker-init.js}"></script>
+-->
+
+<script th:src="@{/vendor/chartjs/Chart.min.js}"></script>
+<script th:src="@{/vendor/google/charts/loader.js}"></script>
+
+<th:block layout:fragment="javascript-extra"/>
+
+</body>
+</html>

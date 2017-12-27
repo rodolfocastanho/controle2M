@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layout/IndexLayout">
+
+<head>
+    <title th:text="${id == null ? 'Cadastro de ordem' : 'Edição de ordem'}">Título</title>
+</head>
+
+<section layout:fragment="content">
+
+    <div class="container">
+        <div class="section">
+
+            <div th:replace="/fragments/MsgInfo :: MsgInfo"></div>
+
+            <div class="row">
+                <div class="col s1"></div>
+
+                <div class="col s10 m10">
+                    <div class="card hoverable">
+                        <div class="card-content black-text">
+                            <span class="card-title" th:text="${id == null ? 'Cadastro de ordem' : 'Edição de ordem'}"></span>
+
+
+                            <div class="row">
+                                <form class="col s12" method="post" th:action="@{/ordem/novo}" th:object="${ordem}">
+
+                                    <input type="hidden" th:field="*{id}"/>
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <input id="numero" type="text" class="validate" th:field="*{numero}"
+                                                   th:classappend="${#fields.hasErrors('numero')} ? invalid" onfocus="onfocus"
+                                                   data-length="20"/>
+                                            <label for="numero" data-error="PEE / OSX obrigatório">PEE / OSX:</label>
+                                        </div>
+                                        <div class="input-field col s3">
+                                            <select id="segmento" th:field="*{segmento}"
+                                                    th:classappend="${#fields.hasErrors('segmento')} ? invalid">
+                                                <option value="" selected="selected">Selecione...</option>
+                                                <option th:each="segmento : ${listaDeSegmento}"
+                                                        th:text="${segmento.descricao}"
+                                                        th:value="${segmento.id}">
+                                                </option>
+                                            </select>
+                                            <label for="segmento" data-error="Segmento obrigatório">Segmento:</label>
+                                        </div>
+                                        <div class="input-field col s6">
+                                            <input id="cliente" type="text" class="validate" th:field="*{cliente}"
+                                                   th:classappend="${#fields.hasErrors('cliente')} ? invalid"
+                                                   data-length="200"/>
+                                            <label for="cliente" data-error="Cliente obrigatório">Cliente:</label>
+                                        </div>
+                                        <!--
+                                        <div class="input-field col s6">
+                                            <input id="dataEntrada" type="text" class="datepicker" th:field="*{dataEntrada}"
+                                                   th:classappend="${#fields.hasErrors('dataEntrada')} ? invalid"/>
+                                            <label for="dataEntrada" data-error="Data obrigatória">Data de Entrada:</label>
+                                        </div>
+                                        -->
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="input-field col s3">
+                                            <select id="tipoServico" th:field="*{tipoServico}"
+                                                    th:classappend="${#fields.hasErrors('tipoServico')} ? invalid">
+                                                <option value="" selected="selected">Selecione...</option>
+                                                <option th:each="tipo : ${listaDeTipos}"
+                                                        th:text="|${tipo.descricao} (${tipo.sigla})|"
+                                                        th:value="${tipo.id}">
+                                                </option>
+                                            </select>
+                                            <label for="tipoServico" data-error="Tipo obrigatório">Tipo de Serviço:</label>
+                                        </div>
+
+                                        <div class="input-field col s3">
+                                            <input id="e1" type="text" class="validate" th:field="*{e1}"
+                                                   th:classappend="${#fields.hasErrors('e1')} ? invalid" onfocus="onfocus"
+                                                   data-length="10" />
+                                            <label for="e1">Quantidade de E1's:</label>
+                                        </div>
+
+
+
+                                        <div class="input-field col s6">
+                                            <select id="responsavel" th:field="*{responsavel}"
+                                                    th:classappend="${#fields.hasErrors('responsavel')} ? invalid">
+                                                <option value="" selected="selected">Selecione...</option>
+                                                <option th:each="usuario : ${listaDeUsuarios}"
+                                                        th:text="${usuario.nome}"
+                                                        th:value="${usuario.id}">
+                                                </option>
+                                            </select>
+                                            <label for="responsavel" data-error="Responsável obrigatório">Responsável:</label>
+                                        </div>
+                                    </div>
+
+
+                                    <button class="btn waves-effect waves-light" type="submit" name="action">Gravar
+                                        <i class="material-icons right">send</i>
+                                    </button>
+
+
+                                </form>
+                            </div>
+
+                        </div>
+
+
+
+                        <!--
+                        <div class="card-action">
+                            <a href="#">This is a link</a>
+                        </div>
+                        -->
+                    </div>
+                </div>
+
+                <div class="col s1"></div>
+            </div>
+
+        </div>
+    </div>
+
+
+
+</section>
+
+</html>

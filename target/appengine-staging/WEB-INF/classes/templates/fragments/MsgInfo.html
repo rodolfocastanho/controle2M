@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <div id="info_success" class="alert card-panel green accent-4 z-depth-4 white-text"
+         th:text="${msg_success}"
+         th:if="${!#strings.isEmpty(msg_success)}"
+         th:fragment="MsgInfo">
+        Sucesso!!!
+    </div>
+
+    <div id="info_error" class="alert card-panel red accent-4 z-depth-4 white-text"
+         th:text="${msg_error}"
+         th:if="${!#strings.isEmpty(msg_error)}"
+         th:fragment="MsgInfo">
+        Sucesso!!!
+    </div>
+
+</html>
