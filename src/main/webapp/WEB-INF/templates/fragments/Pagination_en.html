@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:fragment="Pagination(pagina)">
+    <ul class="center pagination" th:if="${not pagina.emptyPage}" th:with="paginaAtual=${pagina.numberActualPage}">
+        <li th:class="${pagina.firstPage} ? disabled">
+            <a th:href="${pagina.urlGoToPage(paginaAtual - 1)}"
+               th:remove="${pagina.firstPage} ? tag">
+                <i class="material-icons">chevron_left</i>
+            </a>
+        </li>
+
+        <li th:if="${(paginaAtual - 2) gt 0}">
+            <a th:href="${pagina.urlGoToPage(0)}">1
+                <span>...</span>
+            </a>
+        </li>
+
+        <th:block th:each="p : ${#numbers.sequence(1, pagina.total)}" th:with="numeroPagina = ${p - 1} ">
+            <li th:if="${(p + 1 ge paginaAtual and p - 1 le paginaAtual + 2)}"
+                th:class="${paginaAtual eq numeroPagina} ? 'active deep-purple darken-4' : 'waves-effect' ">
+                <a th:href="${pagina.urlGoToPage(numeroPagina)}" th:text="${p}">1</a>
+            </li>
+        </th:block>
+
+        <li th:if="${(paginaAtual + 3) lt pagina.total}">
+            <a th:href="${pagina.urlGoToPage(pagina.total - 1)}">
+                ... <span th:text="${pagina.total}"></span>
+            </a>
+        </li>
+
+        <li th:class="${pagina.lastPage} ? disabled">
+            <a th:href="${pagina.urlGoToPage(paginaAtual + 1)}"
+               th:remove="${pagina.lastPage} ? tag">
+                <i class="material-icons">chevron_right</i>
+            </a>
+        </li>
+    </ul>
+</th:block>
+</html>

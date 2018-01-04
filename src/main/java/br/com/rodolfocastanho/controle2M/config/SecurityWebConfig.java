@@ -19,12 +19,11 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
           .antMatchers("/resources/**", "/erro", "/vendor/**", "/images/**", "/javascript/**", "/stylesheet/**").permitAll()
-          //.antMatchers("/javax.faces/**", "/org/primefaces/**", "/META-INF/**").permitAll()
+          .antMatchers("/javax.faces/**", "/org/primefaces/**", "/META-INF/**").permitAll()
 
-          //.antMatchers("/relatorio/**").permitAll()
-          .antMatchers("/relatorio/**").hasRole("ADMIN")
-          .antMatchers("/ordem/novo").hasRole("ADMIN")
-          .antMatchers("/usuario/**").hasRole("ADMIN")
+          .antMatchers("/relatorio/**").permitAll()//hasRole("ADMIN")
+          .antMatchers("/ordem/novo").permitAll()//hasRole("ADMIN")
+          .antMatchers("/usuario/**").permitAll()//hasRole("ADMIN")
 
                 //.antMatchers("/usuario/**").permitAll()
 

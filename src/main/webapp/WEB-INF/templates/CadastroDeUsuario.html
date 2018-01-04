@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="/layout/IndexLayout">
+
+<head>
+    <title th:text="${id == null ? 'Cadastro de usuário' : 'Edição de usuário'}">Título</title>
+</head>
+
+    <section layout:fragment="content">
+
+        <div class="container">
+            <div class="section">
+
+                <div th:replace="/fragments/MsgInfo :: MsgInfo"></div>
+
+                <div class="row">
+                    <div class="col s1"></div>
+
+                    <div class="col s10 m10">
+                        <div class="card hoverable">
+                            <div class="card-content black-text">
+                                <span class="card-title" th:text="${id == null ? 'Cadastro de usuário' : 'Edição de usuário'}"></span>
+
+
+                                <div class="row">
+                                    <form class="col s12" method="post" th:action="@{/usuario/novo}" th:object="${usuario}">
+
+                                        <input type="hidden" th:field="*{id}"/>
+                                        <input type="hidden" th:field="*{senha}"/>
+                                        <div class="row">
+                                            <div class="input-field col s6">
+                                                <input id="login" type="text" class="validate" th:field="*{login}"
+                                                   th:classappend="${#fields.hasErrors('login')} ? invalid"
+                                                   data-length="10"
+                                                   th:disabled="${id != null}"
+                                                   placeholder="*{login}"/>
+                                                <label for="login" data-error="Preencha o Login">Login:</label>
+                                                <div th:if="${id != null}">
+                                                    <input type="hidden" th:field="*{login}"/>
+                                                </div>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <input id="nome" type="text" class="validate" th:field="*{nome}"
+                                                       th:classappend="${#fields.hasErrors('nome')} ? invalid"
+                                                       data-length="100"/>
+                                                <label for="nome" data-error="Preencha o Nome">Nome Completo:</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="input-field col s6">
+                                                <input id="email" type="email" class="validate" th:field="*{email}"
+                                                       th:classappend="${#fields.hasErrors('email')} ? invalid"
+                                                       data-length="100"/>
+                                                <label for="email" data-error="email inválido" data-success="ok">Email:</label>
+                                            </div>
+                                            <div class="input-field col s6">
+                                                <select id="perfil" th:field="*{tipoPerfil}"
+                                                        th:classappend="${#fields.hasErrors('tipoPerfil')} ? invalid">
+                                                    <option value="" selected="selected">Selecione...</option>
+                                                    <option th:each="perfil : ${listaPerfil}"
+                                                            th:text="${perfil.tipoPerfil}"
+                                                            th:value="${perfil}"></option>
+                                                </select>
+                                                <label for="perfil" data-error="Preencha o Perfil">Perfil:</label>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row" th:if="${id} != null">
+                                            <div class="col s6">
+                                                <input id="resetaSenha" name="resetaSenha" type="checkbox" />
+                                                <label for="resetaSenha">Resetar Senha?</label>
+                                            </div>
+                                        </div>
+
+
+                                        <button class="btn waves-effect waves-light" type="submit" name="action">Gravar
+                                            <i class="material-icons right">send</i>
+                                        </button>
+
+
+                                    </form>
+                                </div>
+
+                            </div>
+
+
+
+                            <!--
+                            <div class="card-action">
+                                <a href="#">This is a link</a>
+                            </div>
+                            -->
+                        </div>
+                    </div>
+
+                    <div class="col s1"></div>
+                </div>
+
+            </div>
+        </div>
+
+
+
+    </section>
+
+</html>
