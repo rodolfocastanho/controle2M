@@ -21,9 +21,9 @@ public class SecurityWebConfig extends WebSecurityConfigurerAdapter {
           .antMatchers("/resources/**", "/erro", "/vendor/**", "/images/**", "/javascript/**", "/stylesheet/**").permitAll()
           .antMatchers("/javax.faces/**", "/org/primefaces/**", "/META-INF/**").permitAll()
 
-          .antMatchers("/relatorio/**").permitAll()//hasRole("ADMIN")
-          .antMatchers("/ordem/novo").permitAll()//hasRole("ADMIN")
-          .antMatchers("/usuario/**").permitAll()//hasRole("ADMIN")
+          .antMatchers("/relatorio/**").hasRole("ADMIN")
+          .antMatchers("/ordem/novo").hasRole("ADMIN")
+          .antMatchers("/usuario/**").hasRole("ADMIN")
 
                 //.antMatchers("/usuario/**").permitAll()
 
